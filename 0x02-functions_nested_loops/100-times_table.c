@@ -1,15 +1,9 @@
-#include <stdio.h>  // Include the standard input/output library
+#include "main.h"
 
-void print_times_table(int n);
-
-int main()
-{
-    int n = 10;  // Example: Printing times table up to 10
-    print_times_table(n);
-
-    return 0;
-}
-
+/**
+ * print_times_table - Prints the n times table, starting with 0.
+ * @n: Number of the times table.
+ */
 void print_times_table(int n)
 {
     int i, j, k;
@@ -24,28 +18,34 @@ void print_times_table(int n)
 
                 if (j == 0)
                 {
-                    printf("%d", k);
+                    _putchar(k + '0');
                 }
                 else
                 {
-                    printf(", ");
+                    _putchar(',');
+                    _putchar(' ');
 
                     if (k < 10)
                     {
-                        printf("   %d", k);
+                        _putchar(' ');
+                        _putchar(' ');
+                        _putchar(k + '0');
                     }
-                    else if (k >= 10 && k < 100)
+                    else if (k < 100)
                     {
-                        printf("  %d", k);
+                        _putchar(' ');
+                        _putchar(k / 10 + '0');
+                        _putchar(k % 10 + '0');
                     }
-                    else if (k >= 100)
+                    else
                     {
-                        printf(" %d", k);
+                        _putchar(k / 100 + '0');
+                        _putchar((k / 10) % 10 + '0');
+                        _putchar(k % 10 + '0');
                     }
                 }
             }
-            printf("\n");
+            _putchar('\n');
         }
     }
 }
-
