@@ -11,8 +11,8 @@ void print_magic(unsigned char *e_ident);
 void print_class(unsigned char *e_ident);
 void print_data(unsigned char *e_ident);
 void print_version(unsigned char *e_ident);
-void print_abi(unsigned char *e_ident);
 void print_osabi(unsigned char *e_ident);
+void print_abi(unsigned char *e_ident);
 void print_type(unsigned int e_type, unsigned char *e_ident);
 void print_entry(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf(int elf);
@@ -238,7 +238,6 @@ e_entry = (e_entry << 16) | (e_entry >> 16);
 
 if (e_ident[EI_CLASS] == ELFCLASS32)
 printf("%#x\n", (unsigned int)e_entry);
-
 else
 printf("%#lx\n", e_entry);
 }
@@ -270,10 +269,16 @@ exit(98);
 * Description: If the file is not an ELF File or
 *              the function fails - exit code 98.
 */
-int main(int _attribute((unused_)) argc, char *argv[])
+int main(int argc, char *argv[])
 {
 Elf64_Ehdr *header;
 int o, r;
+
+if (argc != 2)
+{
+dprintf(STDERR_FILENO, "Usage: %s <ELF file>\n", argv[0]);
+exit(98);
+}
 
 o = open(argv[1], O_RDONLY);
 if (o == -1)
@@ -281,13 +286,15 @@ if (o == -1)
 dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 exit(98);
 }
+
 header = malloc(sizeof(Elf64_Ehdr));
 if (header == NULL)
 {
 close_elf(o);
-dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+dprintf(STDERR_FILENO, "Error: Memory allocation failure\n");
 exit(98);
 }
+
 r = read(o, header, sizeof(Elf64_Ehdr));
 if (r == -1)
 {
